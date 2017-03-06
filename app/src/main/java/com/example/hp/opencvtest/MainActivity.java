@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void  feature(View v){
-        Intent intent = new Intent(this,ORB_Feature_Detector.class);
+        Intent intent = new Intent(this,OCRActivity.class);
         if (intent.resolveActivity(getPackageManager()) != null)
             startActivity(intent);
     }
@@ -85,15 +85,16 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayer.start();*/
     }
     @Override
-    public void onPause(){
-        if(t1 !=null){
+    public void onDestroy() {
+// Don't forget to shutdown tts!
+        if (t1 != null) {
             t1.stop();
             t1.shutdown();
         }
-        super.onPause();
+        super.onDestroy();
     }
 
-    void  click(View v){
+    public void  click(View v){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, CAMERA_REQUEST);

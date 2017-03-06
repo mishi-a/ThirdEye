@@ -1,0 +1,314 @@
+package com.example.hp.opencvtest;
+
+/**
+ * Created by Hp on 04-03-2017.
+ */
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class OCRActivity extends Activity implements OnClickListener {
+    private TessOCR mTessOCR;
+    private TextView mResult;
+    //ProgressDialog is class i.e circular wheel type which rotate as in plz wait messages.
+    private ProgressDialog mProgressDialog;
+    private ImageView mImage;
+    private Button mButtonGallery, mButtonCamera;
+    private String mCurrentPhotoPath;
+    private static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int REQUEST_PICK_PHOTO = 2;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_ocr);
+
+        mResult = (TextView) findViewById(R.id.tv_result);
+        mImage = (ImageView) findViewById(R.id.image);
+        mButtonGallery = (Button) findViewById(R.id.bt_gallery);
+        mButtonGallery.setOnClickListener(this);
+        mButtonCamera = (Button) findViewById(R.id.bt_camera);
+        mButtonCamera.setOnClickListener(this);
+        mTessOCR = new TessOCR();
+    }
+
+    private void uriOCR(Uri uri) {
+        if (uri != null) {
+            /*
+             The goal of InputStream and OutputStream is to abstract different ways to input and
+             output: whether the stream is a file, a web page, or the screen shouldn't matter. All
+             that matters is that you receive information from the stream (or send information into
+             that stream
+             */
+            InputStream is = null;
+            try {
+                //getContentResolver = Return a ContentResolver instance for your application's package.
+                //Open a stream on to the content associated with a content URI. If there is no data
+                // associated with the URI, FileNotFoundException is thrown.
+                is = getContentResolver().openInputStream(uri);
+                Bitmap bitmap = BitmapFactory.decodeStream(is);
+                mImage.setImageBitmap(bitmap);
+                doOCR(bitmap);
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            /*
+            Java finally block is a block that is used to execute important code such as closing
+            connection, stream etc. Java finally block is always executed whether exception is
+            handled or not. Java finally block follows try or catch block.
+            */
+            finally {
+                if (is != null) {
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEND.equals(intent.getAction())) {
+            Uri uri = (Uri) intent
+                    .getParcelableExtra(Intent.EXTRA_STREAM);
+            uriOCR(uri);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+
+        mTessOCR.onDestroy();
+    }
+
+    private void dispatchTakePictureIntent() {
+        //Standard Intent action that can be sent to have the camera application capture an image and return it.
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                //EXTRA_OUTPUT = The name of the Intent-extra used to indicate a content resolver
+                // Uri to be used to store the requested image or video.
+                /*
+                Creates a Uri from a file. The URI has the form "file://". Encodes path characters
+                with the exception of '/'.
+                Example: "file:///tmp/android.txt"
+                 */
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+
+    /**
+     * http://developer.android.com/training/camera/photobasics.html
+     */
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+                .format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        //Path where to store the image
+        String storageDir = Environment.getExternalStorageDirectory()
+                + "/TessOCR";
+        //If dir doesn't exist create
+        File dir = new File(storageDir);
+        if (!dir.exists())
+            dir.mkdir();
+        //Creating file with exact location of image
+        File image = new File(storageDir + "/" + imageFileName + ".jpg");
+
+        // Save a file: path for use with ACTION_VIEW intents
+        //Returns the absolute path of this file. An absolute path is a path that starts at a root of
+        // the file system. On Android, there is only one root: /.
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+    /*
+     ROOT CAUSE = StartActivityForResult()
+     Called when an activity you launched exits, giving you the requestCode you started it with,
+     the resultCode it returned, and any additional data from it.
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        if (requestCode == REQUEST_TAKE_PHOTO
+                && resultCode == Activity.RESULT_OK) {
+            setPic();
+        }
+        else if (requestCode == REQUEST_PICK_PHOTO
+                && resultCode == Activity.RESULT_OK) {
+            //Retrieve data this intent is operating on. This URI specifies the name of the data;
+            // often it uses the content: scheme, specifying data in a content provider.
+            Uri uri = data.getData();
+            if (uri != null) {
+                uriOCR(uri);
+            }
+        }
+    }
+
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = mImage.getWidth();
+        int targetH = mImage.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        /*
+        inJustDecodeBounds = If set to true, the decoder will return null (no bitmap),
+        but the out... fields will still be set, allowing the caller to query the bitmap without
+        having to allocate the memory for its pixels.
+         */
+        bmOptions.inJustDecodeBounds = true;
+        /*Decode a file path into a bitmap. If the specified file name is null,
+          or cannot be decoded into a bitmap, the function returns null.
+          mcurrentPhotoPath = complete path name for the file to be decoded.
+          bmOptions = BitmapFactory.Options: null-ok; Options that control downsampling and whether
+          the image should be completely decoded, or just is size returned.
+        */
+        //NOT REQUIRED WE CAN REMOVE IT
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        /*
+         oytWidth = The resulting width of the bitmap.
+         If inJustDecodeBounds is set to false, this will be width of the output bitmap after any scaling is applied.
+         If true, it will be the width of the input image without any accounting for scaling.
+         */
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        /*
+        inSampleSize = If set to a value > 1, requests the decoder to subsample the original image, returning a
+        smaller image to save memory. The sample size is the number of pixels in either dimension
+        that correspond to a single pixel in the decoded bitmap. For example, inSampleSize == 4
+        returns an image that is 1/4 the width/height of the original, and 1/16 the number of pixels.
+         Any value <= 1 is treated the same as 1. Note: the decoder uses a final value based on
+         powers of 2, any other value will be rounded down to the nearest power of 2.
+         */
+        bmOptions.inSampleSize = scaleFactor << 1;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        mImage.setImageBitmap(bitmap);
+        doOCR(bitmap);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        int id = v.getId();
+        switch (id) {
+            case R.id.bt_gallery:
+                pickPhoto();
+                break;
+            case R.id.bt_camera:
+                takePhoto();
+                break;
+        }
+    }
+
+    private void pickPhoto() {
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQUEST_PICK_PHOTO);
+    }
+
+    private void takePhoto() {
+        dispatchTakePictureIntent();
+    }
+
+    private void doOCR(final Bitmap bitmap) {
+        if (mProgressDialog == null) {
+            mProgressDialog = ProgressDialog.show(this, "Processing",
+                    "Doing OCR...", true);
+        }
+        else {
+            mProgressDialog.show();
+        }
+        /*
+         A thread is a thread of execution in a program. The Java Virtual Machine allows an application
+         to have multiple threads of execution running concurrently.These Work in Background and stop
+         freezing our App.We can't apply User interface changes inside this as it is non UI thread.
+        */
+        new Thread(new Runnable() {
+            public void run() {
+                //Call to TessOCR getOCRResult method
+                final String result = mTessOCR.getOCRResult(bitmap);
+                //This thread help us to change UI as it is UI thread.
+                //In place of this we can use Thread handler also.
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+                        if (result != null && !result.equals("")) {
+                            mResult.setText(result);
+                        }
+
+                        mProgressDialog.dismiss();
+                    }
+
+                });
+
+            };
+        }).start();
+    }
+}
