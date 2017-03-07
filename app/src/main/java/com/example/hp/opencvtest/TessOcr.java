@@ -9,7 +9,7 @@ import java.io.File;
 /**
  * Created by Hp on 04-03-2017.
  */
-public class TessOCR {
+public class TessOCR extends TessBaseAPI {
     //TessBaseAPI = Java interface for the Tesseract OCR engine.
     private TessBaseAPI mTess;
 
@@ -35,7 +35,11 @@ public class TessOCR {
         // a GetUTF8Text, and it will automatically perform recognition.
         //The recognized text is returned as a String which is coded as UTF8.
         String result = mTess.getUTF8Text();
+        String[] arr = result.split(" ");
+        for ( String ss : arr) {
 
+
+        }
         return result;
     }
 
