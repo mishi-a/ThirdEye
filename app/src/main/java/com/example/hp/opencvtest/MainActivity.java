@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(R.layout.activity_main);
         imageView = (ImageView)this.findViewById(R.id.imageView1);
 
@@ -65,8 +67,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
     }
-    public void  feature(View v){
-        Intent intent = new Intent(this,OCRActivity.class);
+    public void getColor(View v){
+        Intent intent = new Intent(this,color_detection.class);
+        if (intent.resolveActivity(getPackageManager()) != null)
+            startActivity(intent);
+    }
+    public void  detectfeature(View v){
+        Intent intent = new Intent(this,ORB_Feature_Detector.class);
         if (intent.resolveActivity(getPackageManager()) != null)
             startActivity(intent);
     }
@@ -79,10 +86,11 @@ public class MainActivity extends AppCompatActivity {
         }
         Toast.makeText(getApplicationContext(), x,Toast.LENGTH_SHORT).show();
         t1.speak(x, TextToSpeech.QUEUE_FLUSH, null);
-        //t1.speak(x.toCharArray(),TextToSpeech.QUEUE_FLUSH, null,null);
-        /*MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.audiocheck);
-        Toast.makeText(getApplicationContext(), "Playing sound",Toast.LENGTH_SHORT).show();
-                mediaPlayer.start();*/
+    }
+    public void doOCR(View v){
+        Intent intent = new Intent(this,OCRActivity.class);
+        if (intent.resolveActivity(getPackageManager()) != null)
+            startActivity(intent);
     }
     @Override
     public void onDestroy() {

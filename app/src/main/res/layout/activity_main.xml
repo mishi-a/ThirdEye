@@ -1,90 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.hp.opencvtest.MainActivity">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="snapshot"
-        android:id="@+id/snapshot"
-        android:paddingTop="30dp"
-        android:layout_centerHorizontal="true"
-        android:textSize="26dp"
-        />
-    <LinearLayout
+    android:background="#FEF9BD"
+    >
+    <RelativeLayout
+        android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/Lay1"
-        android:layout_below="@id/snapshot"
-        android:paddingBottom="16dp"
-        >
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.example.android.thirdeye.MainActivity">
 
-        <EditText
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/snapshot"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/newText"
-            android:hint="Add Text here"
-            android:layout_weight="7"
+            android:orientation="horizontal"
+            android:id="@+id/Lay1"
+            android:paddingBottom="16dp"
+            >
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/newText"
+                android:hint="Add Text here"
+                android:layout_weight="7"
+                />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                tools:contentDescription="Voice button"
+                android:background="#904832"
+                android:src="@drawable/ic_play_arrow_w"
+                android:onClick="voice"
+                />
+        </LinearLayout>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Lay1"
+            android:id="@+id/search"
+            android:text="search Net"
+            android:gravity="center_horizontal"
+            android:background="#904832"
+            android:paddingTop="20dp"
+            android:onClick="search"
             />
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Voice"
-            android:onClick="voice"
+            android:layout_below="@id/search"
+            android:text="Check color"
+            android:background="#904832"
+            android:id="@+id/color"
+            android:layout_marginTop="16dp"
+            android:onClick="getColor"
             />
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout1"
+            android:layout_below="@id/color"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
 
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_camera_w"
+                android:layout_weight="2"
+                android:text="Click"
+                tools:contentDescription="Camera button"
+                android:id="@+id/clicked"
+                android:onClick="click"
+                android:padding="5dp"
+                android:background="#904832"
+                android:layout_marginRight="32dp"
+                android:layout_below="@+id/color"
+                android:layout_centerInParent="true"
+                />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#904832"
+                android:text="Detect"
+                android:onClick="detectfeature"
+                />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/Lay1"
-        android:text="search"
-        android:paddingTop="20dp"
-        android:onClick="search"
-        />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Click"
-        android:id="@+id/clicked"
-        android:onClick="click"
-        android:layout_below="@+id/snapshot"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="136dp"
-        android:paddingBottom="16dp"
-        />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Detct Feature"
-        android:id="@+id/feature"
-        android:layout_below="@id/clicked"
-        android:layout_marginTop="32dp"
-        android:paddingBottom="16dp"
-        android:onClick="feature"
-        />
+        </LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout1"
+            android:id="@+id/ocr"
+            android:text="ocR"
+            android:onClick="doOCR"
+            android:layout_marginTop="16dp"
+            android:background="#904832"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ocr"
+            android:paddingTop="16dp"
+            android:orientation="horizontal">
 
-    <ImageView android:id="@+id/imageView1"
-        android:layout_height="170dp"
-        android:src="@drawable/img"
-        android:layout_width="212dp"
-        android:layout_below="@id/feature"
-        android:maxHeight="180dp"
-        android:layout_centerHorizontal="true"
-        />
-
-</RelativeLayout>
+            <ImageView android:id="@+id/imageView1"
+                android:layout_height="150dp"
+                android:src="@drawable/img"
+                android:layout_width="212dp"
+                android:maxHeight="180dp"
+                />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
+                android:id="@+id/colored"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

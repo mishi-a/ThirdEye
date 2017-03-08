@@ -3,7 +3,7 @@
     package="com.example.hp.opencvtest">
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/images"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -23,9 +23,11 @@
             </intent-filter>
         </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
-        <activity android:name=".ORB_Feature_Detector" android:label="ORB_Feature_Detector" android:screenOrientation="portrait" />
+        <activity android:name=".ORB_Feature_Detector" android:label="ORB_Feature_Detector" android:screenOrientation="landscape" />
         <activity
             android:name=".OCRActivity" android:label="OCR" />
+        <activity
+            android:name=".color_detection" android:label="color" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
