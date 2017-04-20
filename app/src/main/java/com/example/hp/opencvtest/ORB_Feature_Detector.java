@@ -30,6 +30,7 @@ import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,11 +43,29 @@ public class ORB_Feature_Detector extends Activity implements CameraBridgeViewBa
     TextView tvName;
     Scalar RED = new Scalar(255, 0, 0);
     Scalar GREEN = new Scalar(0, 255, 0);
+    //Abstract base class for 2D image feature detectors.
+    /*
+    A feature is a point that islikely to maintain a similar appearance when viewed from different
+    distances or angles. For example, corners often have this characteristic.
+     */
     FeatureDetector detector;
+    /*
+     A descriptor is a vector of data about a feature. Some features are not suitable for generating
+     a descriptor, so an image has fewer descriptors than features.
+    */
+    //Abstract base class for computing descriptors for image keypoints.
     DescriptorExtractor descriptor;
+    /*
+    Find matches between the two sets of descriptors. If we imagine the descriptors as points in a
+    multidimensional space, a match is defned in terms of some measure of distance between points.
+    Descriptors that are close enough to each other are considered a match.
+     */
     DescriptorMatcher matcher;
+    //data type to store image pixel characteristics
     Mat descriptors2,descriptors1;
     Mat img1;
+    //KeyPoint stores salient points description. It stores x, y, angle, size etc.
+    //Matrix of key point
     MatOfKeyPoint keypoints1,keypoints2;
 
     static {
@@ -55,7 +74,7 @@ public class ORB_Feature_Detector extends Activity implements CameraBridgeViewBa
         else
             Log.d("SUCCESS", "OpenCV loaded");
     }
-
+    //ASync initializtion of OpenCV
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -77,30 +96,47 @@ public class ORB_Feature_Detector extends Activity implements CameraBridgeViewBa
             }
         }
     };
-
+    //Initializing opencv various data type
     private void initializeOpenCVDependencies() throws IOException {
+        //Enabling camera view
         mOpenCvCameraView.enableView();
+        /*
+         Class implementing the ORB (oriented BRIEF) keypoint detector and descriptor extractor,
+         described in [RRKB11]. The algorithm uses FAST in pyramids to detect stable keypoints,
+         selects the strongest features using FAST or Harris response, finds their orientation
+         using first-order moments and computes the descriptors using BRIEF (where the coordinates
+         of random point pairs (or k-tuples) are rotated according to the measured orientation).
+        */
+        //Creates a feature detector by its name.
         detector = FeatureDetector.create(FeatureDetector.ORB);
+        //Creates a descriptor extractor by name.
         descriptor = DescriptorExtractor.create(DescriptorExtractor.ORB);
+        //BruteForceHamming uses It takes the descriptor of one feature in first set and is matched
+        // with all other features in second set using some distance calculation. And the closest
+        // one is returned.
         matcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMING);
         img1 = new Mat();
         AssetManager assetManager = getAssets();
         InputStream istr = assetManager.open("a.jpeg");
         Bitmap bitmap = BitmapFactory.decodeStream(istr);
+        //Converting Bitmap to Mat
         Utils.bitmapToMat(bitmap, img1);
+        //Converting image to grayscale
         Imgproc.cvtColor(img1, img1, Imgproc.COLOR_RGB2GRAY);
         img1.convertTo(img1, 0); //converting the image to match with the type of the cameras image
         descriptors1 = new Mat();
         keypoints1 = new MatOfKeyPoint();
+        //Detects keypoints in an image (first variant) or image set (second variant).
         detector.detect(img1, keypoints1);
+        //Computes the descriptors for a set of keypoints detected in an image (first variant) or
+        // image set (second variant).
         descriptor.compute(img1, keypoints1, descriptors1);
-
     }
 
 
     public ORB_Feature_Detector() {
 
-        Log.i(TAG, "Instantiated new " + this.getClass());
+        Log.d(TAG, "Instantiated new " + this.getClass());
     }
 
     /**
@@ -111,6 +147,7 @@ public class ORB_Feature_Detector extends Activity implements CameraBridgeViewBa
 
         Log.i(TAG, "called onCreate");
         super.onCreate(savedInstanceState);
+        //Keep Screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.feature_detector_layout);
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.tutorial1_activity_java_surface_view);
@@ -154,8 +191,40 @@ public class ORB_Feature_Detector extends Activity implements CameraBridgeViewBa
         img1.release();
     }
 
-    public Mat recognize(Mat aInputFrame) {
+    public List<DMatch> match(Mat descriptors,Mat dupdescriptors){
+        Log.d(TAG, "match");
+        Log.d(TAG, "match");
+        MatOfDMatch matches = new MatOfDMatch();
+        Log.d(TAG, "match");
+        matcher.match(descriptors, dupdescriptors, matches);
 
+        Log.d(TAG, "match");
+        List<DMatch> matchesList = matches.toList();
+
+        Double max_dist = 0.0;
+        Double min_dist = 100.0;
+
+        for (int i = 0; i < matchesList.size(); i++) {
+            Double dist = (double) matchesList.get(i).distance;
+            if (dist < min_dist)
+                min_dist = dist;
+            if (dist > max_dist)
+                max_dist = dist;
+        }
+        Log.d(TAG, "match");
+        List<DMatch> good_matches = new ArrayList<DMatch>();
+        for (int i = 0; i < matchesList.size(); i++) {
+            if (matchesList.get(i).distance <= (1.5 * min_dist))
+                good_matches.add(matchesList.get(i));
+        }
+        Log.d(TAG, "match");
+        Log.d(TAG,"result" + good_matches.size());
+        return  good_matches;
+    }
+    public Mat recognize(Mat aInputFrame,int flag) {
+
+        if(flag == 1)
+            return new Mat();
         Imgproc.cvtColor(aInputFrame, aInputFrame, Imgproc.COLOR_RGB2GRAY);
         descriptors2 = new Mat();
         keypoints2 = new MatOfKeyPoint();
@@ -202,7 +271,7 @@ public class ORB_Feature_Detector extends Activity implements CameraBridgeViewBa
     }
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-        return recognize(inputFrame.rgba());
+        return recognize(inputFrame.rgba(),0);
 
     }
 }

@@ -34,12 +34,8 @@ public class TessOCR extends TessBaseAPI {
         // results, and sets the rectangle to the full image, so it may be followed immediately by
         // a GetUTF8Text, and it will automatically perform recognition.
         //The recognized text is returned as a String which is coded as UTF8.
+
         String result = mTess.getUTF8Text();
-        String[] arr = result.split(" ");
-        for ( String ss : arr) {
-
-
-        }
         return result;
     }
 

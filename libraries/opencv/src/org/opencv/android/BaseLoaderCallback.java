@@ -12,6 +12,7 @@ import android.util.Log;
  */
 public abstract class BaseLoaderCallback implements LoaderCallbackInterface {
 
+    private final String Tag = "Hi";
     public BaseLoaderCallback(Context AppContext) {
         mAppContext = AppContext;
     }

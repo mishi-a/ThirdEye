@@ -2,17 +2,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.hp.opencvtest">
     <application
+        android:name=".objectdetection.App"
         android:allowBackup="true"
         android:icon="@drawable/images"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".splashActivity"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -26,17 +36,34 @@
         <activity android:name=".ORB_Feature_Detector" android:label="ORB_Feature_Detector" android:screenOrientation="landscape" />
         <activity
             android:name=".OCRActivity" android:label="OCR" />
+        <activity android:name=".objectdist.CameraActivity" android:label="Object Dist"/>
+        <activity android:name=".imgmatching_MainActivity" android:label="IMAGE MATCHING MAIN" />
+        <activity android:name=".imgmatching_Settings" android:label="SETTINGS" />
+        <activity android:name=".tmatch_MainActivity" android:label="tmatch" />
+        <activity android:name=".objectdetection.RecognizeConceptsActivity" />
+        <activity
+            android:name=".startactivity_viepager"  />
+
         <activity
             android:name=".color_detection" android:label="color" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        AndroidManifest.xmlXHTML
+
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="ocr"/>
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="ocr"/>
     </application>
     <supports-screens android:resizeable="true"
         android:smallScreens="true"
         android:normalScreens="true"
         android:largeScreens="true"
         android:anyDensity="true" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>

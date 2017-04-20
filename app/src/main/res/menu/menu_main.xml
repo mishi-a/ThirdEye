@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:compat="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <group android:checkableBehavior="single">
+    <item
+        android:id="@+id/menu_red"
+        android:orderInCategory="1"
+        android:showAsAction="never"
+        tools:ignore="AppCompatResource"
+        android:title="@string/electronics"/>
+    <item
+        android:id="@+id/menu_green"
+        android:orderInCategory="2"
+        android:showAsAction="never"
+        tools:ignore="AppCompatResource"
+        android:title="@string/general"/>
+    </group>
+
+</menu>

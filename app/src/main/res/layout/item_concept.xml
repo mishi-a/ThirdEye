@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:background="#006064"
+        android:textColor="#FFFFFF"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+
+        />
+
+    <TextView
+        android:id="@+id/probability"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        />
+
+</RelativeLayout>

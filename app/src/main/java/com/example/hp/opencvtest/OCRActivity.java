@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -30,7 +31,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class OCRActivity extends Activity implements OnClickListener {
+public class OCRActivity extends AppCompatActivity implements OnClickListener {
     private TessOCR mTessOCR;
     private TextView mResult;
     private ProgressDialog mProgressDialog;
@@ -179,7 +180,7 @@ public class OCRActivity extends Activity implements OnClickListener {
         // Get the dimensions of the View
         int targetW = mImage.getWidth();
         int targetH = mImage.getHeight();
-
+        //Imgproc.threshold(im, bw, 0, 255, Imgproc.THRESH_BINARY_INV | Imgproc.THRESH_OTSU);
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;

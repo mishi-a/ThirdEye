@@ -1,4 +1,16 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath(
+                'com.android.tools.build:gradle:2.3.1',
+                "com.neenbedankt.gradle.plugins:android-apt:1.8",
+        )
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: "com.neenbedankt.android-apt"
 
 android {
     compileSdkVersion 25
@@ -12,7 +24,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-
+    lintOptions { lintConfig rootProject.file('gradle/lint.xml') } // needed to suppress Okio's lint errors
     buildTypes {
         release {
             minifyEnabled false
@@ -29,7 +41,35 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.1'
     testCompile 'junit:junit:4.12'
     compile project(':libraries:opencv')
+    compile(
+            "com.android.support:recyclerview-v7:24.2.1",
+            "com.android.support:design:24.2.1",
+
+            "com.clarifai.clarifai-api2:core:2.2.1",
+
+
+            // For logging our HTTP outbound + inbound data
+            "com.jakewharton.timber:timber:4.3.0",
+            "com.squareup.okhttp3:logging-interceptor:3.4.1",
+
+            // For runtime permissions on Marshmallow and above
+            "io.reactivex:rxjava:1.1.10",
+            "com.tbruyelle.rxpermissions:rxpermissions:0.7.1@aar",
+    )
+    compile("com.mikepenz:materialdrawer:5.6.0") { transitive = true }
+
+    // For getting views without clunky findViewById
+    compile "com.jakewharton:butterknife:8.4.0"
+    apt "com.jakewharton:butterknife-compiler:8.4.0"
+    compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.google.firebase:firebase-appindexing:10.2.0'
     compile 'com.rmtheis:tess-two:6.0.3'
     compile 'com.google.android.gms:play-services-vision:10.2.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:appcompat-v7:25.2.1'
+    compile 'com.android.support:support-v4:25.2.1'
+    compile 'com.android.support:design:25.3.0'
+    compile 'com.android.support:support-v13:25.3.0'
+
+
 }

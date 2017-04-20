@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
     }
     public void  detectfeature(View v){
-        Intent intent = new Intent(this,ORB_Feature_Detector.class);
+        Intent intent = new Intent(this,OCRActivity.class);
         if (intent.resolveActivity(getPackageManager()) != null)
             startActivity(intent);
     }

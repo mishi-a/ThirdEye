@@ -2,4 +2,40 @@
     <string name="app_name">ThirdEye</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="character_recognition">CHARACTER RECOGNITION</string>
+    <string name="extract_feature">EXTRACT FEATURE</string>
+    <string name="color_detection">COLOR DETECTION</string>
+    <string name="third_eye">THIRD EYE</string>
+    <string name="button_text">OCR!</string>
+    <string name="text_hint">OCRed Text will appear here</string>
+    <string name="request_permission">This sample needs camera permission.</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+    <string name="intro_message">
+        <![CDATA[
+
+
+            This sample demonstrates a contour based algorithm for distance detection from camera to object.
+            Take the first picture to calibrate to fix focal length of camera; provide distance
+            to object and perimeter length of the object in the pop-up dialog that follows.
+            The next picture you take will provide distance of that object to the camera.
+            The pictures will be stored in "/storage/emulated/0/Android/data/com.example.android.camera2basic/files/".
+
+
+        ]]>
+    </string>
+    <string name="_2_d_object_distance_finder">2-D Object Distance Finder</string>
+    <string name="select">select</string>
+    <string name="start">start</string>
+    <string name="menu_settings">Settings</string>
+    <string name="clarifai_id">b_AjrnPv8iM_l6Vv0mTu0x0cNFikbRuy8Gh06NW0</string>
+    <string name="clarifai_secret">TnoLvboLTWXU2PkFlzeoXLCtVjxGsdBdg8kkv14y</string>
+    <string name="error_external_storage_permission_not_granted">You must accept this permission so we can upload your images!</string>
+
+    <string name="error_while_contacting_api">Error while contacting Clarifai API</string>
+    <string name="no_results_from_api">API did not return any results</string>
+    <string name="drawer_item_recognize_tags">Recognize Concepts in Photo</string>
+    <string name="drawer_item_recognize_colors">Recognize Primary Color in Photo</string>
+    <string name="upload_image_hint">Click the button in the bottom-right corner to upload an image!</string>
+    <string name="electronics">Electronics</string>
+    <string name="general">General</string>
 </resources>
