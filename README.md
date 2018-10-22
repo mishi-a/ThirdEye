@@ -25,6 +25,6 @@ An APP developed to recognize color,Text and Electronics object like motion sens
 
 Project Members
 
-Ayush Mishra
+. Ayush Mishra
 
-Rijul Dhir
+. Rijul Dhir
