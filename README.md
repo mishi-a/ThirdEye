@@ -24,7 +24,7 @@ Following are the features the app provides :
 
 #### INSTALLATION
 
-1.Clone This Project in Android Studio And made required changes in Gradle Properties.
+1.Clone This Project in Android Studio And make required changes in Gradle Properties for compatibility.
 
 2.Finally , Build and Run.
 
