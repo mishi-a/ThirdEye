@@ -40,4 +40,5 @@ Object recognition for electrical Instrument : (SSD = Seven Segment Display)
 
 #### Presentation:
 [Presentation 1](https://github.com/Ayush-IITP/ThirdEye/blob/master/OBJECT%20RECOGNITION.pptx)
+
 [Presentation_2](https://github.com/Ayush-IITP/ThirdEye/blob/master/Group8_presentation.pptx)
