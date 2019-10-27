@@ -1,32 +1,32 @@
 # ThirdEye
 
-An APP developed in order to recognize text, colour and object.
+An APP developed in order to recognize text, colour and object dynamically.
 Following are the features the app provides :
-1.Color Detection
-2.Optical Character Recognition(OCR)
-3.Feature Matching
-4.Image Matching using histogram analysis
-5.Object Recognition whose domain is restricted to electrical components like Breadboard , SSD etc.
+1. Color Detection
+2. Optical Character Recognition(OCR)
+3. Feature Matching
+4. Image Matching using histogram analysis
+5. Object Recognition whose domain is restricted to electrical components like Breadboard, SSD etc.
 
 #### PREREQUISITES 
 
-1.Android Studio 
+1. Android Studio
 
-2.Android Phone
+2. Android Phone
 
 #### Libraries and APIs
 
-1.Opencv - follow this [link](http://stackoverflow.com/questions/27406303/opencv-in-android-studio) to setup opencv.
+1. Opencv - follow this [link](http://stackoverflow.com/questions/27406303/opencv-in-android-studio) to setup opencv.
 
-2.Tesseract - For Text Recognition Part
+2. Tesseract - For Text Recognition Part
 
-3.Clirafai Api account - For object recognition Part
+3. Clirafai Api account - For object recognition Part
 
 #### INSTALLATION
 
-1.Clone This Project in Android Studio And make required changes in Gradle Properties for compatibility.
+1. Clone This Project in Android Studio And make required changes in Gradle Properties for compatibility.
 
-2.Finally , Build and Run.
+2. Finally, Build and Run.
 
 #### Results:
 This shows the colour and Text recognition Feature of the android APP:
@@ -35,7 +35,7 @@ This shows the colour and Text recognition Feature of the android APP:
 Image matching using histogram analysis is performed:
 ![alt text](https://github.com/Ayush-IITP/ThirdEye/blob/master/Screenshot%20from%202019-01-26%2016-10-49.png)
 
-Object recognition for electrical Instrument : (SSD = Seven Segment Display)
+Object recognition for electrical Instrument: (SSD = Seven Segment Display)
 ![alt text](https://github.com/Ayush-IITP/ThirdEye/blob/master/Screenshot%20from%202019-01-26%2016-10-54.png)
 
 #### Presentation:
